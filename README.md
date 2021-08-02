@@ -9,12 +9,12 @@ For any questions, please contact us at support@cozyvision.com
 Send sms to any mobile number using username, password, senderid, route.
 
 ## Requirements
-username : SMS Alert account username
-password : SMS Alert account password
-mobileno : Destination mobile number (Keep number in international format)
-message : Message Content to send
-sender : Receiver will see this as sender's ID
-route : If your operator supports multiple routes then give one route name
+* username : SMS Alert account username
+* password : SMS Alert account password
+* mobileno : Destination mobile number (Keep number in international format)
+* message : Message Content to send
+* sender : Receiver will see this as sender's ID
+* route : If your operator supports multiple routes then give one route name
 
 ## How to use
 ```java
