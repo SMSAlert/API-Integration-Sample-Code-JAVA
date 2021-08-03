@@ -58,7 +58,7 @@ public class SendSms {
 	static String username;
 	static String password;
 
-	static String sender_id;
+	static String sender;
 	static String api_url;
 	static String start;
 
@@ -69,36 +69,37 @@ public class SendSms {
 	String dlr_url;
 	String type;
 	String route;
+	String authkey;
 
 	// function to set sender id
-	public static void setsender_id(String sid) {
-		sender_id = sid;
-		return;
+	public static String setsender_id(String sid) {
+		sender = sid;
+		return sender;
 	}
 
 	// function to set api_key key
-	public static void setapi_key(String apk) {
+	public static String setapi_key(String apk) {
 		// checking for valid working key
 		api_key = apk;
-		return;
+		return api_key;
 	}
 
 	// function to set username 
-	public static void setusername(String user) {
+	public static String setusername(String user) {
 		// checking for valid working key
 		username = user;
-		return;
+		return username;
 	}
 
 	// function to set password 
-	public static void setpassword(String pwd) {
+	public static String setpassword(String pwd) {
 		// checking for valid working key
 		password = pwd;
-		return;
+		return password;
 	}
 
 	// function to set Api url
-	public static void setapi_url(String ap) {
+	public static String setapi_url(String ap) {
 		// checking for valid url format
 		String check = ap;
 		String str = check.substring(0, 7);
@@ -118,6 +119,7 @@ public class SendSms {
 			start = t;
 			api_url = ap;
 		}
+		return api_url;
 	}
 
 	// function to set parameter import java.net.URLEncoder;
@@ -144,9 +146,14 @@ public class SendSms {
 	 * @ Scheduled message : give time in 'ddmmyyyyhhmm' format
 	 */
 	public String process_sms(String sender, String mob_no, String message, String route, String unicode, String time)
-			throws IOException, MalformedURLException, KeyManagementException, NoSuchAlgorithmException {
-
-		message = URLEncoder.encode(message, "UTF-8");
+			throws IOException, MalformedURLException, KeyManagementException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		
+		if (api_key != null)
+			authkey ="&apikey=" + api_key;
+		else
+		    authkey ="&user=" + username + "&pwd=" + password;
+		if(message != null && mob_no != null && sender != null){
+			message = URLEncoder.encode(message, "UTF-8");
 		if (unicode == null)
 			unicode = "0";
 		unicode = "&unicode=" + unicode;
@@ -154,9 +161,10 @@ public class SendSms {
 			time = "";
 		else
 			time = "&time=" + URLEncoder.encode(time, "UTF-8");
-		URL url = new URL("" + start + api_url+"/api/push.json?user=" + username + "&pwd=" + password + "&sender=" + sender
+		URL url = new URL("" + start + api_url+"/api/push.json?"+ authkey + "&sender=" + sender
 				+ "&mobileno=" + mob_no + "&text=" + message + "&route=" + route + unicode + time);
 		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
 		con.setRequestProperty("User-Agent", "Mozilla/5.0");
 		con.setRequestMethod("POST");
 		con.setDoOutput(true);
@@ -171,7 +179,10 @@ public class SendSms {
 		}
 		rd.close();
 		return result;
-
+	    }
+		else
+		return null;
+		
 	}
 
 	public void send_sms(String sender,String mob_no, String message, String route)
