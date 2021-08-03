@@ -15,16 +15,22 @@ public class Send {
 	static String mobileno = "91XXXXXXXXXX";
 	// enter the route here between ""
 	static String route = "demo";
+	
+	//If you want to use apikey for authentication uncomment below line. 
+        //static String api_key = "56exxxxxx";
    
 	
 	public static void main(String[] args) throws Exception { 
 		
 		
-	   SendSms smsObj = new SendSms();
+	SendSms smsObj = new SendSms();
+		
+	//If you want to use apikey for authentication uncomment below line.
+    	//smsObj.setparams(api_url,api_key,sender);
    
-	   smsObj.authparams(api_url, username, password);
+	smsObj.authparams(api_url, username, password);
    
-	   smsObj.send_sms(sender,mobileno, message, route); 
+	smsObj.send_sms(sender,mobileno, message, route); 
 				
 	}
 
